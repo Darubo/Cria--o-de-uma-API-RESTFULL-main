@@ -1,0 +1,172 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "TDSoft 2023 - API - Gefferson Alves, Diogo Felipe",
+    "description": "API que faz buscas específicas em repositórios do Git Hub",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor de teste"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Repositorios",
+      "description": "Endpoints relacionados à repositórios"
+    }
+  ],
+  "paths": {
+    "/repositories": {
+      "get": {
+        "summary": "Permite a busca por repositórios cadastrados com base no nome do repositório",
+        "description": "Permite a busca por repositórios cadastrados com base no nome do repositório",
+        "tags": [
+          "Repositorios"
+        ],
+        "parameters": [
+          {
+            "name": "nome",
+            "in": "query",
+            "required": false,
+            "allowEmptyValue": false,
+            "example": "react",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "por_pagina",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Busca realizada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/RepositorioSimplificado"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Ocorreu um erro na busca",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensagem": {
+                      "type": "string",
+                      "example": "Nome é obrigatório"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/repositories/{repoId}": {
+      "get": {
+        "summary": "Obtém dados de um repositório específico com base no ID do repositório",
+        "description": "Obtém dados de um repositório específico com base no ID do repositório",
+        "tags": [
+          "Repositorios"
+        ],
+        "parameters": [
+          {
+            "name": "repoId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "MDEwOlJlcG9zaXRvcnkxMDI3MDI1MA=="
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Repositório encontrado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Repositorio"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RepositorioSimplificado": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 123456
+          },
+          "nome": {
+            "type": "string",
+            "example": "react"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Repositório do React"
+          }
+        }
+      },
+      "Repositorio": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 123456
+          },
+          "nome": {
+            "type": "string",
+            "example": "react"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "Repositório do React"
+          },
+          "estrelas": {
+            "type": "integer",
+            "example": 100
+          },
+          "forks": {
+            "type": "integer",
+            "example": 50
+          },
+          "url": {
+            "type": "string",
+            "example": "https://github.com/react"
+          }
+        }
+      }
+    }
+  }
+}
